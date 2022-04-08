@@ -15,7 +15,7 @@
   \**********************/
 /***/ (() => {
 
-eval("async function getWeatherData(city){\n    console.log(\"Button was clicked\")\n    let myKey = \"cd12a942ed068de6131a2a564cc7f235\"\n    console.log(\"Key: \",myKey)\n    let requestURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myKey}`\n    console.log(\"URL: \",requestURL)\n    //const response = await fetch(requestURL, {mode: 'cors'});\n    //console.log(response)\n}\n\n\n\nfunction init(){\n    console.log(\"MY KEY :\",\"cd12a942ed068de6131a2a564cc7f235\") // remove this after you've confirmed it working\n    //document.getElementById(\"searchBtn\").addEventListener(\"click\",getWeatherData(document.getElementById(\"inputCity\").value))\n}\n\nwindow.onload = init;\n\n\n//# sourceURL=webpack://odin-project-weatherapp/./src/index.js?");
+eval("async function getWeatherData(city){\n    console.log(\"Button was clicked\")\n    let myKey = \"cd12a942ed068de6131a2a564cc7f235\"\n    let requestURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myKey}`\n    console.log(\"URL: \",requestURL)\n    const response = await fetch(requestURL, {mode: 'cors'});\n    console.log(response)\n    const responseBody = await response.json();\n    console.log(responseBody);\n}\n\n\n\nfunction init(){\n    console.log(\"MY KEY :\",\"cd12a942ed068de6131a2a564cc7f235\"); // remove this after you've confirmed it working\n    document.getElementById(\"searchBtn\").addEventListener(\"click\",function(){getWeatherData(document.getElementById(\"inputCity\").value)});\n}\n\nwindow.onload = init;\n\n\n//# sourceURL=webpack://odin-project-weatherapp/./src/index.js?");
 
 /***/ })
 
