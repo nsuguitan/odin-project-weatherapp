@@ -1,0 +1,70 @@
+body{
+    background-color: #563f46;
+    color: white;
+}
+
+.has-search .form-control-feedback {
+    position: absolute;
+    z-index: 2;
+    display: block;
+    width: 2.375rem;
+    height: 2.375rem;
+    line-height: 2.375rem;
+    text-align: center;
+    pointer-events: none;
+    color: #aaa;
+}
+
+.widget-container {
+    width: 612px;
+    height: 412px;
+    display: block;
+    background-color: #877077;
+    border-radius: 25px;
+  /*   border: 5px solid #eceff1; */
+    margin: 0 auto;
+  }
+
+.top-left {
+    width: 50%;
+    height:60%;
+    display: inline-block;
+}
+
+#reportLocation{
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+.temp-block{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#temperature{
+    font-size: 50px;
+}
+
+#temp-units{
+    margin-left: 10px;
+    font-size: medium;
+}
+#low-temp{
+    margin-left: 10px;
+}
+
+.temp-sub-block{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 20px;
+}
+
+.top-right {
+    width: 50%;
+    height:60%;
+    display: inline-block;
+}
