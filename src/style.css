@@ -66,5 +66,25 @@ body{
 .top-right {
     width: 50%;
     height:60%;
-    display: inline-block;
+    float: right;
+    justify-content: center;
+    align-items: center;
+}
+
+#todayWeatherHeader{
+    margin-left: auto;
+    margin-right: auto ;
+    text-align: center;
+}
+
+.todayWeatherBox{
+    margin-left: 38px;
+    overflow: hidden;
+    width: 75%;
+    height:75%;
+}
+
+img{
+    min-width: 100%;
+    transform: translate(0,-20%);
 }

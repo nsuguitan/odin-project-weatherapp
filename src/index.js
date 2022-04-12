@@ -73,7 +73,8 @@ function createWidget(location,weatherIconURL){
     }
 
     //top right
-    const todayWeatherIcon = document.getElementById("reportLocation");
+    const todayWeatherIcon = document.getElementById("todayWeather");
+    todayWeatherIcon.src = weatherIconURL;
 }
 async function init(){
     console.log("MY KEY :",process.env.WEATHER_API_KEY); // remove this after you've confirmed it working
