@@ -37,20 +37,11 @@ async function reportWeatherData(city){
     let weatherIconId = weatherToday.weather[0].icon
     console.log("Today's weather icon: ", weatherIconId)
     let weatherIconURL = `http://openweathermap.org/img/wn/${weatherIconId}@2x.png`
-    createWidget(myCity[0],weatherIconURL); 
+
+    createWidget(myCity[0],weatherToday.main.temp, weatherToday.main.temp_max, weatherToday.main.temp_min,weatherIconURL, weekForecast); 
 
 }
 
-// async function createWidget(cityid,myKey){
-//     let script = document.createElement('script');
-//     script.innerHTML = `
-//     window.myWidgetParam ? window.myWidgetParam : window.myWidgetParam = [];
-//     window.myWidgetParam.push({id: 15,cityid: ${cityid} ,appid: '${myKey}',units: 'imperial',containerid: 'openweathermap-widget-15'});
-//     (function() {var script = document.createElement('script');script.async = true;script.charset = "utf-8";script.src = "//openweathermap.org/themes/openweathermap/assets/vendor/owm/js/weather-widget-generator.js";
-//     var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(script, s);  })();`;
-//     document.head.appendChild(script);
-//     return console.log("widget created")
-// }
 
 async function getData(myURL){
     const response = await fetch(myURL, {mode: 'cors'});
@@ -61,7 +52,7 @@ async function getData(myURL){
     return responseBody;
 }
 
-function createWidget(location,weatherIconURL){
+function createWidget(location, temp, tempMax, tempMin, weatherIconURL){
     //top left
     console.log("Location:",location);
     const widgetLocation = document.getElementById("reportLocation");
@@ -71,10 +62,26 @@ function createWidget(location,weatherIconURL){
     else{
         widgetLocation.innerHTML = location.name + ", " + location.country;
     }
+    const widgetTemp = document.getElementById("temperature");
+    const widgetTempMax = document.getElementById("high-temp");
+    const widgetTempMin = document.getElementById("low-temp");
+    const widgetCelcius = document.getElementById("celcius");
+    const widgetTempDivider = document.getElementById("temperature-divider");
+    const widgetFarenheit = document.getElementById("farenheit");
+
+    widgetTemp.innerHTML = temp;
+    widgetTempMax.innerHTML = `H: ${tempMax}&#176;`;
+    widgetTempMin.innerHTML = `L: ${tempMin}&#176;`;
+    widgetCelcius.hidden = false;
+    widgetTempDivider.hidden = false;
+    widgetFarenheit.hidden = false;
 
     //top right
     const todayWeatherIcon = document.getElementById("todayWeather");
     todayWeatherIcon.src = weatherIconURL;
+
+    //bottom
+
 }
 async function init(){
     console.log("MY KEY :",process.env.WEATHER_API_KEY); // remove this after you've confirmed it working
