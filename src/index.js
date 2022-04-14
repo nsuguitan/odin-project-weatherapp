@@ -52,7 +52,7 @@ async function getData(myURL){
     return responseBody;
 }
 
-function createWidget(location, temp, tempMax, tempMin, weatherIconURL){
+function createWidget(location, temp, tempMax, tempMin, weatherIconURL, weekForecast){
     //top left
     console.log("Location:",location);
     const widgetLocation = document.getElementById("reportLocation");
@@ -81,6 +81,7 @@ function createWidget(location, temp, tempMax, tempMin, weatherIconURL){
     todayWeatherIcon.src = weatherIconURL;
 
     //bottom
+    
 
 }
 async function init(){
