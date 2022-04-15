@@ -1,4 +1,4 @@
-async function reportWeatherData(city){
+async function reportWeatherData(city,units){
 
     let myKey = process.env.WEATHER_API_KEY;
     let requestCityLocation = `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${myKey}`
@@ -29,8 +29,8 @@ async function reportWeatherData(city){
 
 
     //console.log("lat: "+lat+" lon: "+lon)
-    let requestCurrentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myKey}&units=metric`;
-    let requestWeekForecastURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,alerts&appid=${myKey}&units=metric`;
+    let requestCurrentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myKey}&units=${units}`;
+    let requestWeekForecastURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,alerts&appid=${myKey}&units=${units}`;
     
 
     let [weatherToday, weekForecast] = await Promise.all([getData(requestCurrentWeatherURL),getData(requestWeekForecastURL)]);
@@ -38,7 +38,11 @@ async function reportWeatherData(city){
     console.log("Today's weather icon: ", weatherIconId)
     let weatherIconURL = `http://openweathermap.org/img/wn/${weatherIconId}@2x.png`
 
-    createWidget(myCity[0],weatherToday.main.temp, weatherToday.main.temp_max, weatherToday.main.temp_min, weatherToday.weather[0].description, weatherIconURL, weekForecast.daily); 
+    createWidget(myCity[0],weatherToday.main.temp, weatherToday.main.temp_max, weatherToday.main.temp_min, weatherToday.weather[0].description, weatherIconURL, weekForecast.daily, units); 
+
+}
+
+async function updateTemp(){
 
 }
 
@@ -53,7 +57,7 @@ async function getData(myURL){
     return responseBody;
 }
 
-function createWidget(location, temp, tempMax, tempMin, weatherIconInfo, weatherIconURL, weekForecast){
+function createWidget(location, temp, tempMax, tempMin, weatherIconInfo, weatherIconURL, weekForecast, units){
     //top left
     console.log("Location:",location);
     const widgetLocation = document.getElementById("reportLocation");
@@ -68,14 +72,22 @@ function createWidget(location, temp, tempMax, tempMin, weatherIconInfo, weather
     const widgetTempMin = document.getElementById("low-temp");
     const widgetCelcius = document.getElementById("celcius");
     const widgetTempDivider = document.getElementById("temperature-divider");
-    const widgetFarenheit = document.getElementById("farenheit");
+    const widgetFahrenheit = document.getElementById("fahrenheit");
 
     widgetTemp.innerHTML = temp;
     widgetTempMax.innerHTML = `H: ${tempMax}&#176;`;
     widgetTempMin.innerHTML = `L: ${tempMin}&#176;`;
     widgetCelcius.hidden = false;
     widgetTempDivider.hidden = false;
-    widgetFarenheit.hidden = false;
+    widgetFahrenheit.hidden = false;
+    if(units == 'metric'){
+        widgetCelcius.style.opacity = 1;
+        widgetFahrenheit.style.opacity = 0.6;
+    }
+    else{
+        widgetCelcius.style.opacity = 0.6;
+        widgetFahrenheit.style.opacity = 1;
+    }
 
     //top right
     const widgetWeatherHeader = document.getElementById("todayWeatherHeader");
@@ -109,7 +121,9 @@ function createWidget(location, temp, tempMax, tempMin, weatherIconInfo, weather
 }
 async function init(){
     console.log("MY KEY :",process.env.WEATHER_API_KEY); // remove this after you've confirmed it working
-    document.getElementById("searchBtn").addEventListener("click",function(){reportWeatherData(document.getElementById("inputCity").value)});
+    document.getElementById("searchBtn").addEventListener("click",function(){reportWeatherData(document.getElementById("inputCity").value,'metric')});
+    document.getElementById("celcius").addEventListener("click",function(){reportWeatherData(document.getElementById("inputCity").value,'metric')});
+    document.getElementById("fahrenheit").addEventListener("click",function(){reportWeatherData(document.getElementById("inputCity").value,'imperial')});
     
 }
 
