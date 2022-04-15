@@ -42,12 +42,6 @@ async function reportWeatherData(city,units){
 
 }
 
-async function updateTemp(){
-
-}
-
-
-
 async function getData(myURL){
     const response = await fetch(myURL, {mode: 'cors'});
     //console.log(response)
