@@ -38,9 +38,10 @@ async function reportWeatherData(city){
     console.log("Today's weather icon: ", weatherIconId)
     let weatherIconURL = `http://openweathermap.org/img/wn/${weatherIconId}@2x.png`
 
-    createWidget(myCity[0],weatherToday.main.temp, weatherToday.main.temp_max, weatherToday.main.temp_min, weatherToday.weather[0].description, weatherIconURL, weekForecast); 
+    createWidget(myCity[0],weatherToday.main.temp, weatherToday.main.temp_max, weatherToday.main.temp_min, weatherToday.weather[0].description, weatherIconURL, weekForecast.daily); 
 
 }
+
 
 
 async function getData(myURL){
@@ -85,7 +86,25 @@ function createWidget(location, temp, tempMax, tempMin, weatherIconInfo, weather
     widgetWeatherIconInfo.innerHTML = weatherIconInfo;
 
     //bottom
+    var options = { weekday: 'long'};
+    for(let i= 0; i < 7; i++){
+        dailyIcon = weekForecast[i].weather[0].icon;
+        myDay = new Date (weekForecast[i].dt * 1000);
+        console.log(myDay)
+        dailyTitle = new Intl.DateTimeFormat('en-US', options).format(myDay);
+        console.log(dailyTitle.substring(0,3));
+        dailyTemp = weekForecast[i].temp.day;
+        
+        let widgetDailyWeatherIcon = document.getElementById(`imgday${i}`);
+        widgetDailyWeatherIcon.src = `http://openweathermap.org/img/wn/${dailyIcon}@2x.png`;
+        let widgetDailyTitle = document.getElementById(`titleday${i}`);
+        widgetDailyTitle.innerHTML = dailyTitle.substring(0,3);
+        let widgetDailyTemp = document.getElementById(`textday${i}`);
+        widgetDailyTemp.innerHTML = `${dailyTemp}&#176;`;
 
+    }
+    const weekForecastBox = document.getElementById("week-forecast-box");
+    weekForecastBox.hidden = false;
 
 }
 async function init(){
