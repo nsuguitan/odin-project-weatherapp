@@ -29,8 +29,8 @@ async function reportWeatherData(city){
 
 
     //console.log("lat: "+lat+" lon: "+lon)
-    let requestCurrentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myKey}`;
-    let requestWeekForecastURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,alerts&appid=${myKey}`;
+    let requestCurrentWeatherURL = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${myKey}&units=metric`;
+    let requestWeekForecastURL = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,minutely,alerts&appid=${myKey}&units=metric`;
     
 
     let [weatherToday, weekForecast] = await Promise.all([getData(requestCurrentWeatherURL),getData(requestWeekForecastURL)]);
@@ -38,7 +38,7 @@ async function reportWeatherData(city){
     console.log("Today's weather icon: ", weatherIconId)
     let weatherIconURL = `http://openweathermap.org/img/wn/${weatherIconId}@2x.png`
 
-    createWidget(myCity[0],weatherToday.main.temp, weatherToday.main.temp_max, weatherToday.main.temp_min,weatherIconURL, weekForecast); 
+    createWidget(myCity[0],weatherToday.main.temp, weatherToday.main.temp_max, weatherToday.main.temp_min, weatherToday.weather[0].description, weatherIconURL, weekForecast); 
 
 }
 
@@ -52,7 +52,7 @@ async function getData(myURL){
     return responseBody;
 }
 
-function createWidget(location, temp, tempMax, tempMin, weatherIconURL, weekForecast){
+function createWidget(location, temp, tempMax, tempMin, weatherIconInfo, weatherIconURL, weekForecast){
     //top left
     console.log("Location:",location);
     const widgetLocation = document.getElementById("reportLocation");
@@ -77,11 +77,15 @@ function createWidget(location, temp, tempMax, tempMin, weatherIconURL, weekFore
     widgetFarenheit.hidden = false;
 
     //top right
-    const todayWeatherIcon = document.getElementById("todayWeather");
-    todayWeatherIcon.src = weatherIconURL;
+    const widgetWeatherHeader = document.getElementById("todayWeatherHeader");
+    widgetWeatherHeader.hidden = false;
+    const widgetWeatherIcon = document.getElementById("todayWeather");
+    widgetWeatherIcon.src = weatherIconURL;
+    const widgetWeatherIconInfo = document.getElementById("weather-current");
+    widgetWeatherIconInfo.innerHTML = weatherIconInfo;
 
     //bottom
-    
+
 
 }
 async function init(){
